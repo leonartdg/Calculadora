@@ -1,218 +1,130 @@
-
-
 //variables
 var teclas = document.querySelectorAll('.tecla');
-var borrar = false
+var borrar = false;
 var display = document.getElementById('display');
-var tecla = '';  rfinal = 0; bloque1 = ''; bloque2 = '';cadena = '';
+localStorage.setItem("bloque1", "");
 
-
-//valor por teclado
-  window.addEventListener('keypress', function(event) {
+//Ingreso por taclado
+window.addEventListener('keypress', function(event) {
 	tecla = event.which || event.KeyCode
   	tecla = String.fromCharCode(tecla);
 	  	if(isNaN(tecla)){
-	  		operadores(tecla);
-	  	}
-	  	else{
-	  				ingresotecla(tecla);
-	  	}
-  });
-
-  //valor por clic
-  teclas.forEach(function(teclas){
-	var tecla = teclas.getAttribute("alt");
-	  teclas.addEventListener('click', function() {
-		  	if(isNaN(tecla)){
-		  		if (tecla=='On') {
-		  			eliminar();
-		  		}else if(tecla=='igual'){
-	  				if (bloque1 == ""){
-						bloque1 = display.textContent
-	  				}else{
-	  				bloque2 = display.textContent;
-					console.log(bloque1)
-	  				calcular();
-	  				}
-		  		}else{
-		  		switch(tecla){
-			  			case 'mas':
-				  			tecla= "+";
-					    	console.log(tecla)
-			  			break;
-			  			case 'menos':
-				  			tecla='-';
-			  			break;
-			  			case 'por':
-				  			tecla='*';
-			  			break;
-			  			case 'dividido':
-				  			tecla='/';
-			  			break;
-	  				}
-	  				tecla=tecla;
-	  				operacion(tecla);
-
-		  		}
-		  	}else{
-
-	  				ingresotecla(tecla);
-	  			}
-	  });
-  
-  });
-
-function calcular(){
-	  	switch(arit){
-	  		case'+':
-	  			if(bloque1==''){rfinal = bloque2}else{rfinal = parseFloat(bloque1) + parseFloat(bloque2);}
-	  		break;
-	  		case'-':
-	  			if(bloque1==''){rfinal = bloque2}else{rfinal = parseFloat(bloque1) - parseFloat(bloque2);}
-	  		break;
-	  		case'*':
-	  			if(bloque1==''){rfinal = bloque2}else{rfinal = parseFloat(bloque1) * parseFloat(bloque2);}
-	  		break;
-	  		case'/':
-	  			if(bloque1==''){rfinal = bloque2}else{rfinal = parseFloat(bloque1) / parseFloat(bloque2);}
-	  		break;
-	  	}
-	  	resultado(rfinal);
-}
-function operadores(tecla){
-	  		switch(tecla){
-	  			case '+':
-	  			operacion(tecla);
-				console.log(tecla)
-	  			break;
-	  			case '-':
-	  			if (bloque2==''){tecla=''}else{operacion(tecla);}
-	  			break;
-	  			case '*':
-	  			operacion(tecla);
-	  			break;
-	  			case '/':
-	  			operacion(tecla);
-	  			break;
-	  			case '=':
-	  				if (bloque1 == ""){
-						bloque1 = display.textContent
-	  				}else{
-	  				bloque2 = display.textContent;
-					console.log(bloque1)
-	  				calcular();
-	  				}
-	  			break;
-	  		}
-}
-
-function ingresotecla(tecla){
-  			c = display.textContent
-	  		if (c == "0"){
-				display.textContent = display.textContent.replace("0", "")	  			
-		  		display.textContent = display.textContent + tecla		  		
-		  		bloque2 = display.textContent
-	  		}else if (borrar==true){
-		  		cadena= cadena + tecla
-		  		display.textContent = cadena
-		  		bloque2 = display.textContent
-	  		}
-	  		else{	  			
-	  			display.textContent = display.textContent + tecla  			
-	  			bloque2 = display.textContent;
-	  		}
-	  		var limitar=display.textContent.length
-	  		
-	  		if (limitar>= 8){
-				display.textContent = display.textContent.substring(0,8);
-				bloque2 = display.textContent
+	  		if(tecla=='='){
+	  			calcular();
+	  		}else if(tecla=='.'){
+		  		n=tecla;
+		  		ingresotecla(n);
+			}else{	
+		  		o=tecla;
+		  		operadores(o);
 			}
-	console.log(tecla)
-}
-
-function operacion(tecla){
-		  	arit = tecla
-		  	calcular();
-		  	if (bloque2!=''){bloque1 = rfinal}else{}
-}
-
-function resultado(rfinal){
-	if (String(parseFloat(rfinal)).length>=8){
-	display.textContent = String(parseFloat(rfinal)).substring(0,8)
-	}
-	else{
-	display.textContent = rfinal		
-	}
-	cambio();
-	rfinal=''
-	console.log(rfinal);
-}
-
-
-function cambio(){
-	borrar=true
-	cadena='';
-}
-
-function eliminar(){
-	rfinal = 0; bloque1 = ''; bloque2 = ''; tecla = ''; cadena=''; borrar=false
-	display.textContent = '0';
-}
-
-/*//valor ingresado por click
-teclas.forEach(function(teclas) {
-var tecla = teclas.getAttribute("alt");
-  // Agregamos un listener a cada elemento
- teclas.addEventListener('click', function() {
-  		condicion = tecla
-	  	if(isNaN(condicion)){
-		  		bloque1=0
-	    	console.log(tecla);
-		    if(tecla=="On"){
-		    	eliminar()
-		    }else if (tecla=='igual') {
-		    calcular()
-		    rfinal = localStorage.getItem("resultado");
-			console.log(rfinal)
-			display.innerHTML= rfinal;
-		    }
+	  	}else{
+	  		n=tecla;
+	  		ingresotecla(n);
 	  	}
-	  	else{
-	    resultado = resultado + tecla
-	  	display.innerHTML= resultado;
-	  	}
-  });
-  
 });
 
-if (arit == "+" || arit == "-" || arit=="*" || arit=="/") {
-	  			arit = arit.replace(arit,tecla);
-	  			console.log(arit)
-		  		bloque1 = parseInt(resultado, 10);
-	  			if(borrar){
-	  				resultado=''
-	  			}
-			}
-
-	  		if (bloque1=='') {
-			    resultado = resultado + tecla
-			  	display.innerHTML= resultado;
+//Ingreso por botones
+teclas.forEach(function(teclas){
+var tecla = teclas.getAttribute("alt");
+  teclas.addEventListener('click', function() {
+	  	if(isNaN(tecla)){
+	  		if (tecla=='On') {
+	  			display.textContent='0';	  			
+				localStorage.setItem("bloque1", "");
+				bloque1='';
+				bloque2='';
+				borrar=false;
+	  		}else if(tecla=='igual'){
+  				calcular();
+  			}else if(tecla=='signo'){
+	  			sig();
+	  		}else if(tecla=='punto'){
+				n='.';
+				ingresotecla(n);
 	  		}else{
-			    resultado = resultado + tecla
-		  		bloque2 = parseInt(resultado, 10);
-			  	display.innerHTML= resultado;
-	  			console.log(bloque1,bloque2)
+		  		switch(tecla){
+		  			case 'mas':
+			  			tecla= "+";
+		  			break;
+		  			case 'menos':
+			  			tecla='-';
+		  			break;
+		  			case 'por':
+			  			tecla='*';
+		  			break;
+		  			case 'dividido':
+			  			tecla='/';
+		  			break;
+	  			}
+  				o=tecla;
+  				operadores(o);
 	  		}
+	  	}else{
+			n=tecla;
+			ingresotecla(n);
+		}
+  });
 
+  });
 
-
-	localStorage.setItem("resultado", rfinal);
-*/
-
-// window.onload = function(){document.onkeypress = PresionarTeclas; } tecla = parseInt(String.fromCharCode(tecla), 10);
-
-
-
-
-
-	  		
+//Entrada de variable n = diguitos
+function ingresotecla(n){
+	var bloque2 = display.textContent;
+	if (borrar) {
+		//alert("se borro");
+		display.textContent="";
+		borrar = false;
+		display.textContent = n;
+	}
+	else if (bloque2 == "0" && n != "."){
+		resp = bloque2.replace("0", "")
+		display.textContent = resp + n;
+	}
+	else{
+		display.textContent = (bloque2 + n).substring(0,9);
+	}
+}
+//Entrada de variable o = a operadores
+function operadores(o){
+	var bloque1 = localStorage.getItem("bloque1");
+	var bloque2 = display.textContent;
+	var operacion = bloque1.substring(0,bloque1.length-1);
+	calcular()
+	if (operacion == "+" || operacion == "-" || operacion=="*" || operacion=="/") {
+		operacion = operacion.replace(operacion,o);
+		var resultado = bloque1.substring(0,bloque1.length-1);
+		bloque1 = resultado+operacion;
+		localStorage.setItem("bloque1", bloque1);
+	}
+	if (bloque1 == "" && bloque2 != ""){
+		bloque1 = bloque2 + o;
+		localStorage.setItem("bloque1", bloque1);
+	}
+	else{
+		bloque1 = bloque1 + bloque2 + o;
+		localStorage.setItem("bloque1", bloque1);
+		}
+		borrar = true;
+}
+//Proceso de operaciones
+function calcular(){
+	var bloque1 = localStorage.getItem("bloque1");
+	var bloque2 = display.textContent;		
+	console.log(bloque1,bloque2)
+	display.textContent = String(eval(bloque1 + bloque2)).substring(0,9);
+	localStorage.clear();
+	bloque1=''
+	borrar = true;
+}
+//Cambio de signo
+function sig(){
+	var bloque2 = display.textContent;
+	if (bloque2 > 0){
+		display.textContent = "-" + bloque2;
+	}
+	else{
+		cambio = bloque2.replace(/[-]/g, "");
+		display.textContent = cambio;
+	}
+}
